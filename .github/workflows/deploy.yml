@@ -25,14 +25,12 @@ jobs:
       - name: Build application images
         run: |
           set -e
-          cd ~/3-tier-docker-compose-monitoring-ubuntu
           echo "Building Phase 1 application images..."
           docker compose -f docker-compose.yml build --no-cache
           
       - name: Deploy application with monitoring
         run: |
           set -e
-          cd ~/3-tier-docker-compose-monitoring-ubuntu
           echo "Deploying application containers (Phase 1)..."
           docker compose -f docker-compose.yml -f docker-compose.monitoring.yml up -d --force-recreate --no-deps backend frontend
           
@@ -44,7 +42,6 @@ jobs:
 
       - name: Health check
         run: |
-          cd ~/3-tier-docker-compose-monitoring-ubuntu
           
           echo "Checking backend health..."
           if docker compose exec -T frontend curl -f http://backend:3000/health > /dev/null 2>&1; then
@@ -78,7 +75,6 @@ jobs:
 
       - name: Show container status
         run: |
-          cd ~/3-tier-docker-compose-monitoring-ubuntu
           echo "=== All Container Status ==="
           docker compose -f docker-compose.yml -f docker-compose.monitoring.yml ps
 
